@@ -1,0 +1,124 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Sentry to Pagerduty bridge "
+host: "XXXXX.execute-api.eu-west-1.amazonaws.com"
+basePath: "/dev"
+schemes:
+- "https"
+paths:
+  /new-event:
+    post:
+      operationId: "postSentryEvent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "apiKey"
+        in: "query"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "SentryEvent"
+        required: true
+        schema:
+          $ref: "#/definitions/SentryEvent"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/PagerdutyEventSent"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ErrorModel"
+      x-amazon-apigateway-request-validator: "Validate body, query string parameters,\
+        \ and headers"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+        uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:XXXXXX:function:testFunction/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+definitions:
+  Stacktrace:
+    type: "object"
+    properties:
+      frames:
+        type: "array"
+        items:
+          type: "string"
+  SentryEvent:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
+      project:
+        type: "string"
+      project_name:
+        type: "string"
+      culprit:
+        type: "string"
+      level:
+        type: "string"
+      url:
+        type: "string"
+      checksum:
+        type: "string"
+      logger:
+        type: "string"
+      message:
+        type: "string"
+      event:
+        $ref: "#/definitions/Event"
+  ErrorModel:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+  PagerdutyEventSent:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      tag:
+        type: "string"
+  Event:
+    type: "object"
+    properties:
+      extra:
+        type: "string"
+      sentry.interfaces.Stacktrace:
+        $ref: "#/definitions/Stacktrace"
+      tags:
+        $ref: "#/definitions/Tags"
+      sentry.interfaces.User:
+        type: "string"
+      sentry.interfaces.Http:
+        type: "string"
+  Tags:
+    type: "array"
+    items:
+      type: "array"
+      items:
+        type: "string"
+x-amazon-apigateway-request-validators:
+  Validate body, query string parameters, and headers:
+    validateRequestParameters: true
+    validateRequestBody: true
