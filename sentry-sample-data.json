@@ -1,0 +1,154 @@
+{
+    "project": "test project",
+    "project_name": "test project name",
+    "culprit": "com.tterry.sentrytest.Test.main(Test.java:25)",
+    "level": "error",
+    "url": "https://sentry.io/xxxxx/xxxxxx/issues/253873647/",
+    "logger": "com.tterry.sentrytest.Test",
+    "message": "Boom!",
+    "id": "253873647",
+    "event": {
+        "received": 1492350480,
+        "sentry.interfaces.Message": {
+            "message": "Boom!"
+        },
+        "errors": [],
+        "extra": {
+            "Raven-Threadname": "main",
+            "HOSTNAME": "tim",
+            "var1": "value1",
+            "var2": "value2"
+        },
+        "event_id": "196491faf6fc4b718ac23458a4afd6a8",
+        "fingerprint": [
+            "{{ default }}"
+        ],
+        "sentry.interfaces.Exception": {
+            "exc_omitted": null,
+            "values": [
+                {
+                    "stacktrace": {
+                        "frames": [
+                            {
+                                "function": "main",
+                                "abs_path": "Test.java",
+                                "module": "com.tterry.sentrytest.Test",
+                                "filename": "Test.java",
+                                "lineno": 20,
+                                "in_app": true
+                            },
+                            {
+                                "function": "run",
+                                "abs_path": "Test.java",
+                                "module": "com.tterry.sentrytest.Test",
+                                "filename": "Test.java",
+                                "lineno": 34,
+                                "in_app": true
+                            },
+                            {
+                                "function": "throwException",
+                                "abs_path": "SecondClass.java",
+                                "module": "com.tterry.sentrytest.SecondClass",
+                                "filename": "SecondClass.java",
+                                "lineno": 17,
+                                "in_app": true
+                            }
+                        ],
+                        "has_system_frames": true,
+                        "registers": null,
+                        "frames_omitted": null
+                    },
+                    "mechanism": null,
+                    "type": "Exception",
+                    "module": "java.lang",
+                    "thread_id": null,
+                    "value": "An exception 20",
+                    "raw_stacktrace": null
+                },
+                {
+                    "stacktrace": {
+                        "frames": [
+                            {
+                                "function": "main",
+                                "abs_path": "Test.java",
+                                "module": "com.tterry.sentrytest.Test",
+                                "filename": "Test.java",
+                                "lineno": 20,
+                                "in_app": false
+                            },
+                            {
+                                "function": "run",
+                                "abs_path": "Test.java",
+                                "module": "com.tterry.sentrytest.Test",
+                                "filename": "Test.java",
+                                "lineno": 34,
+                                "in_app": false
+                            },
+                            {
+                                "function": "throwException",
+                                "abs_path": "SecondClass.java",
+                                "module": "com.tterry.sentrytest.SecondClass",
+                                "filename": "SecondClass.java",
+                                "lineno": 14,
+                                "in_app": true
+                            },
+                            {
+                                "function": "throwException",
+                                "abs_path": "ThirdClass.java",
+                                "module": "com.tterry.sentrytest.ThirdClass",
+                                "filename": "ThirdClass.java",
+                                "lineno": 12,
+                                "in_app": true
+                            }
+                        ],
+                        "has_system_frames": true,
+                        "registers": null,
+                        "frames_omitted": null
+                    },
+                    "mechanism": null,
+                    "type": "TestException",
+                    "module": "com.tterry.sentrytest",
+                    "thread_id": null,
+                    "value": "Sample exception 24",
+                    "raw_stacktrace": null
+                }
+            ]
+        },
+        "version": "6",
+        "_ref_version": 2,
+        "_ref": 72145,
+        "metadata": {
+            "type": "TestException",
+            "value": "Sample exception 24"
+        },
+        "type": "error",
+        "id": 5281815860,
+        "tags": [
+            [
+                "env",
+                "Test"
+            ],
+            [
+                "level",
+                "error"
+            ],
+            [
+                "logger",
+                "com.tterry.sentrytest.Test"
+            ],
+            [
+                "server_name",
+                "localhost"
+            ],
+            [
+                "transaction",
+                "com.tterry.sentrytest.Test.main(Test.java:25)"
+            ]
+        ],
+        "sdk": {
+            "client_ip": "81.141.19.237",
+            "version": "7.6.0-db416",
+            "name": "Raven-Java"
+        }
+    }
+}
