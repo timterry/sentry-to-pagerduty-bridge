@@ -26,3 +26,14 @@ The 'pagerdutyServiceKey' determines which Pagerduty service the generated event
 passed to the Pagerduty api as the 'routing_key'.
 
 The lambda function must be updated with your Pagerduty API key.
+
+## Testing
+I've included a sample Sentry event json that can be used with Postman to test that the API
+Gateway is working. The sample data was created using the Java Sentry Raven logback appender version
+7.6.
+
+## Some dragons
+The Sentry webhook documentation is sparse, and i'm guessing that the structure of the generated
+event differs depending what was used to create it. In my case i used Sentry with Logback version 7.6,
+but i guess the format will change for the newer version 8 API. Its probably different for Sentry
+events generated with other technologies.
