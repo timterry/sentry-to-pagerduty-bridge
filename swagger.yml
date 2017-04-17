@@ -2,8 +2,8 @@
 swagger: "2.0"
 info:
   version: "1.0.0"
-  title: "Sentry to Pagerduty bridge "
-host: "XXXXX.execute-api.eu-west-1.amazonaws.com"
+  title: "Sentry to Pagerduty bridge"
+host: "xxxxx.execute-api.eu-west-1.amazonaws.com"
 basePath: "/dev"
 schemes:
 - "https"
@@ -17,6 +17,10 @@ paths:
       - "application/json"
       parameters:
       - name: "apiKey"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "pagerdutyServiceKey"
         in: "query"
         required: true
         type: "string"
@@ -40,19 +44,27 @@ paths:
         responses:
           default:
             statusCode: "200"
-        uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:XXXXXX:function:testFunction/invocations"
+        uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:xxxxx:function:testFunction/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         contentHandling: "CONVERT_TO_TEXT"
-        type: "aws"
+        type: "aws_proxy"
 definitions:
-  Stacktrace:
+  StacktraceFrame:
     type: "object"
     properties:
-      frames:
-        type: "array"
-        items:
-          type: "string"
+      function:
+        type: "string"
+      abs_path:
+        type: "string"
+      module:
+        type: "string"
+      filename:
+        type: "string"
+      lineno:
+        type: "number"
+      in_app:
+        type: "boolean"
   SentryEvent:
     type: "object"
     required:
@@ -102,15 +114,67 @@ definitions:
   Event:
     type: "object"
     properties:
+      received:
+        type: "number"
+      errors:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
       extra:
+        type: "object"
+        properties: {}
+      event_id:
         type: "string"
-      sentry.interfaces.Stacktrace:
-        $ref: "#/definitions/Stacktrace"
+      fingerprint:
+        type: "array"
+        items:
+          type: "string"
+      sentry.interfaces.Exception:
+        $ref: "#/definitions/SentryInterfacesException"
+      version:
+        type: "string"
+      _ref_version:
+        type: "number"
+      _ref:
+        type: "number"
+      metadata:
+        type: "object"
+        properties: {}
+      type:
+        type: "string"
+      id:
+        type: "number"
       tags:
         $ref: "#/definitions/Tags"
-      sentry.interfaces.User:
+      sdk:
+        $ref: "#/definitions/Sdk"
+  Sdk:
+    type: "object"
+    properties:
+      client_ip:
         type: "string"
-      sentry.interfaces.Http:
+      version:
+        type: "string"
+      name:
+        type: "string"
+  SentryInterfacesException:
+    type: "object"
+    properties:
+      values:
+        type: "array"
+        items:
+          $ref: "#/definitions/SentryInterfacesExceptionValue"
+  SentryInterfacesExceptionValue:
+    type: "object"
+    properties:
+      stacktrace:
+        $ref: "#/definitions/StacktraceFrame"
+      type:
+        type: "string"
+      module:
+        type: "string"
+      value:
         type: "string"
   Tags:
     type: "array"
